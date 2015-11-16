@@ -140,6 +140,9 @@ $(document).ready(function() {
 		<th>
 		<a href="#">Added on</a>
 		</th>
+		<th>
+		<a href="#">Edit</a>
+		</th>
 		</tr>
 		</thead>
 		<tbody class="scrollContent">
@@ -152,8 +155,8 @@ $(document).ready(function() {
 		// output data of each row
 		$a = 0;
 		while($row = mysql_fetch_assoc($result)) {
-	        	if($a){echo '<tr class="alternaterow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td></tr>';$a=0;}
-	        	else{echo '<tr class="normalrow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td></tr>';$a=1;}
+	        	if($a){echo '<tr class="alternaterow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td>Edit</td></tr>';$a=0;}
+	        	else{echo '<tr class="normalrow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td>Edit</td></tr>';$a=1;}
 		}
 		echo '</table></div>';
 	}
@@ -162,6 +165,7 @@ $(document).ready(function() {
 	}
 		
 	?>
+	<button text="Add new key">
 	</div>
 	
 	<div id="log" class="tab">
