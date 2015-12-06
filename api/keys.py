@@ -10,19 +10,14 @@ import time
 import i2c
 
 
-Dsql=''
-newDsql=''
-
-
-
-logging.basicConfig(filename='/var/log/keys.log',format='%(asctime)s: %(levelname)s - %(message)s', datefmt='%d.%m.%Y %H:%M:%S',level=logging.DEBUG)
+logging.basicConfig(filename='/var/log/lcars/keys.log',format='%(asctime)s: %(levelname)s - %(message)s', datefmt='%d.%m.%Y %H:%M:%S',level=logging.INFO)
 
 port = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1)
 
 readout=""
 
 try:
-    logging.info('Connecting to database...')
+    logging.debug('Connecting to database...')
     db = MySQLdb.connect(host="localhost", user="lcars", passwd="lcars", db="lcars") 
    
 
@@ -31,14 +26,6 @@ except mdbError:
     #raise Exception('Database connection error')
 
 while 1:
-    cur = db.cursor()
-    cur.execute("SELECT * FROM devices")
-    newDsql=cur.fetchall()
-    #print newDsql
-    if (Dsql!=newDsql):
-	Dsql=newDsql
-        i2c.refresh(Dsql)
-        
     readout=""
     if (port.inWaiting() > 0):
         readout = port.read(13)

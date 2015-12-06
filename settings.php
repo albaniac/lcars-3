@@ -5,12 +5,12 @@ include 'functions.php';
 
 session_start();
 if (isset($_SESSION['user'])){
-	dbconnect();
+	$con = dbconnect();
 	echo '<form action="settings.php" method="post">';
 	
-	echo 'Door toggle time: <input type="text" name="door_time" class="settingsfield" value="'.mysql_fetch_array(mysql_query('SELECT `value` FROM `settings` WHERE `parameter`="door_time"'))[0].'"><br>';
-	echo 'Thermomether I2C address: <input type="text" name="i2c_th" class="settingsfield" value="'.mysql_fetch_array(mysql_query('SELECT `value` FROM `settings` WHERE `parameter`="i2c_th"'))[0].'"><br>';
-	echo 'Humidity sensor I2C address: <input type="text" name="i2c_rh" class="settingsfield" value="'.mysql_fetch_array(mysql_query('SELECT `value` FROM `settings` WHERE `parameter`="i2c_rh"'))[0].'"><br>';
+	echo 'Door toggle time: <input type="text" name="door_time" class="settingsfield" value="'.mysqli_fetch_array(mysqli_query($con,'SELECT `value` FROM `settings` WHERE `parameter`="door_time"'))[0].'"><br>';
+	echo 'Thermomether I2C address: <input type="text" name="i2c_th" class="settingsfield" value="'.mysqli_fetch_array(mysqli_query($con,'SELECT `value` FROM `settings` WHERE `parameter`="i2c_th"'))[0].'"><br>';
+	echo 'Humidity sensor I2C address: <input type="text" name="i2c_rh" class="settingsfield" value="'.mysqli_fetch_array(mysqli_query($con,'SELECT `value` FROM `settings` WHERE `parameter`="i2c_rh"'))[0].'"><br>';
 	
 }
 if (!isset($_SESSION['user'])){

@@ -3,7 +3,7 @@ include 'functions.php';
 session_start();
 if (isset($_SESSION['user'])){ 
 	
-	dbconnect();
+	$con = dbconnect();
 	$to=$_POST["to"];
 	if($_POST["user"]=='*'){
 		$query = "SELECT * FROM `AccessLog` WHERE `Time` >= ".$_POST["from"]." AND `Time` <= ".$to;
@@ -11,8 +11,8 @@ if (isset($_SESSION['user'])){
 	else{
 		$query = "SELECT * FROM `AccessLog` WHERE `Key` = '".$_POST["user"]."' AND `Time` >= ".$_POST["from"]." AND `Time` <= ".$to;
 	}
-	$result =  mysql_query($query);
-	if (mysql_num_rows($result) > 0) {
+	$result =  mysqli_query($con,$query);
+	if (mysqli_num_rows($result) > 0) {
 		echo '
 		<table class="scrollTable" width="100%" cellspacing="0" cellpadding="0" border="0">
 		<thead class="fixedHeader">
@@ -31,7 +31,7 @@ if (isset($_SESSION['user'])){
 		<tbody class="scrollContent">';
 		// output data of each row
 		$a = 0;
-		while($row = mysql_fetch_assoc($result)) {
+		while($row = mysqli_fetch_assoc($result)) {
 	        	if($a){echo '<tr class="alternaterow"><td>' . $row["Time"]. '</td><td>' . $row["Key"]. '</td><td>' . $row["Action"]. '</td></tr>';$a=0;}
 	        	else{echo '<tr class="normalrow"><td>' . $row["Time"]. '</td><td>' . $row["Key"]. '</td><td>' . $row["Action"]. '</td></tr>';$a=1;}
 		}
@@ -43,8 +43,7 @@ if (isset($_SESSION['user'])){
 
 }
 if (!isset($_SESSION['user'])){
-echo "You are not authorised to access this page.";
-die("Login error");
+die('You are not authorised to access this page.<audio autoplay><source src="sounds/access_denied.wav" type="audio/wav"></audio>');
 }
 
 

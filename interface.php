@@ -1,6 +1,6 @@
 <?php
-include 'config.php';
-include 'functions.php';
+include_once 'config.php';
+include_once 'functions.php';
 session_start();
 if (isset($_SESSION['user'])){ 
 	if($_POST["action"]=="toggle"){
@@ -27,29 +27,31 @@ if (isset($_SESSION['user'])){
 		echo exec("python ".$config['site_root']."api/proxy.py check");
 	}
 	elseif($_POST["action"]=="switch"){
-		dbconnect();
+		$con = dbconnect();
 
 		if ($_POST["device"]=="allon"){
-			$query = "UPDATE `devices` SET `status`=1 WHERE 1";
+			$query = 'UPDATE `devices` SET `status`=1 WHERE  `class` = "light"';
 			}
 		elseif ($_POST["device"]=="alloff"){
-			$query = "UPDATE `devices` SET `status`=0 WHERE 1";
+			$query = 'UPDATE `devices` SET `status`=0 WHERE  `class` = "light"';
 			}
 		else {
-			$newstatus = mysql_fetch_assoc(mysql_query("SELECT * FROM `devices` WHERE `device` = '".$_POST["device"]."'"))["status"];
+			$newstatus = mysqli_fetch_assoc(mysqli_query($con,"SELECT * FROM `devices` WHERE `device` = '".$_POST["device"]."'"))["status"];
 			$newstatus = (int)!$newstatus;
 			$query = "UPDATE `devices` SET `status`=".$newstatus." WHERE `device`='".$_POST["device"]."'";
 			echo $newstatus;
 					
 		}
-		mysql_query($query);
+		mysqli_query($con,$query);
+		mysqli_commit($con);
+		mysqli_close($con);
 	}
 
 	else{}
 
 }
 if (!isset($_SESSION['user'])){
-die("You are not authorised to access this page.");
+die('You are not authorised to access this page.<audio autoplay><source src="sounds/access_denied.wav" type="audio/wav"></audio>');
 }
 ?>
 

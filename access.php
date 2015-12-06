@@ -4,7 +4,7 @@
 include 'functions.php';
 session_start();
 if (!isset($_SESSION['user'])){
-die("You are not authorised to access this page.");
+die('You are not authorised to access this page.<audio autoplay><source src="sounds/access_denied.wav" type="audio/wav"></audio>');
 }
 ?>
 
@@ -96,9 +96,27 @@ $(document).ready(function() {
 	function checkdoor(){
 		$.post("interface.php", {action: "check"}, function(data){
 			//alert(data);
-			if(data.valueOf()==0){state="The door is opened."}
-			else if(data.valueOf()==128){state="The door is closed."}
-			else {state="Error getting the door state."}
+			var dso = <?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "door_state_open" AND `lang` = "'.$_SESSION['lang'].'"';
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo json_encode($array['value']);
+					?>;
+			var dsc = <?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "door_state_closed" AND `lang` = "'.$_SESSION['lang'].'"';
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo json_encode($array['value']);
+					?>;
+			var dsu = <?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "door_state_check" AND `lang` = "'.$_SESSION['lang'].'"';
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo json_encode($array['value']);
+					?>;				
+			if(data.valueOf()==0){state=dso}
+			else if(data.valueOf()==128){state=dsc}
+			else {state=dsu}
 			$("#doorstate").empty().append(state);
 		})
 	}
@@ -108,20 +126,56 @@ $(document).ready(function() {
 
 <div id="tabnav">
 	<div class="subnavbutton" id="b1" ref="#door">
-		<h3>Door</h3>
+		<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "door" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 	</div>
 	<div class="subnavbutton" id="b2"ref="#users">	
-		<h3>Users</h3>
+		<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "users" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 	</div>
 	<div class="subnavbutton" id="b3"ref="#log">	
-		<h3>Logs</h3>
+		<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "logs" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 	</div>
 </div>
 
 <div id="tabs">
 	<div id="door" class="tab active" onoad="checkdoor()">
-	<h1><div id="doorstate">Checking the door state.</div></h1>
-	<h1><div class="doorbtn" id="toggle">toggle</div><div class="doorbtn" id="open"> open </div>  <div class="doorbtn" id="close">close</div>  </h1>
+	<h1><div id="doorstate"></div></h1>
+	<h1><div class="doorbtn" id="toggle"><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "toggle" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></div><div class="doorbtn" id="open"> <?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "open" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?> </div>  <div class="doorbtn" id="close"><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "close" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></div>  </h1>
 	
 	</div>
 	
@@ -148,13 +202,13 @@ $(document).ready(function() {
 		<tbody class="scrollContent">
 	<?php
 	
-	dbconnect();
+	$con = dbconnect();
 	$query = "SELECT * FROM `keys`";
-	$result =  mysql_query($query);
-	if (mysql_num_rows($result) > 0) {
+	$result =  mysqli_query($con,$query);
+	if (mysqli_num_rows($result) > 0) {
 		// output data of each row
 		$a = 0;
-		while($row = mysql_fetch_assoc($result)) {
+		while($row = mysqli_fetch_assoc($result,MYSQLI_ASSOC)) {
 	        	if($a){echo '<tr class="alternaterow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td>Edit</td></tr>';$a=0;}
 	        	else{echo '<tr class="normalrow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td>Edit</td></tr>';$a=1;}
 		}
@@ -173,13 +227,13 @@ $(document).ready(function() {
 echo '<h1>Access LOG: </h1><br><br>
 		<form id="filter">
 		From: <input type="date" class="textfield" name="from" value="'.date('Ymd', strtotime('-1 month')).'">  To:<input type="date" class="textfield" name="to"value="'.date('Ymd').'">  User:<select name="user"><option value="*">*</option>';
-		dbconnect();
+		$con = dbconnect();
 		$query = "SELECT * FROM `keys`";
-		$result =  mysql_query($query);
-		while($row = mysql_fetch_assoc($result)) {echo '<option value="'.$row["Name"].'">'.$row["Name"].'</option>';}
+		$result =  mysqli_query($con,$query);
+		while($row = mysqli_fetch_assoc($result,MYSQLI_ASSOC)) {echo '<option value="'.$row["Name"].'">'.$row["Name"].'</option>';}
 		$query = "SELECT * FROM `users`";
-		$result =  mysql_query($query);
-		while($row = mysql_fetch_assoc($result)) {echo '<option value="web-'.$row["user"].'">web-'.$row["user"].'</option>';}
+		$result =  mysqli_query($con,$query);
+		while($row = mysqli_fetch_assoc($result,MYSQLI_ASSOC)) {echo '<option value="web-'.$row["user"].'">web-'.$row["user"].'</option>';}
 		echo '</select>
 		<input type="submit" class="button" value="refresh">
 		</form>

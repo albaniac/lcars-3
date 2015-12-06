@@ -3,6 +3,7 @@
 	<div id="content">
 		<div class="innertube">
 		<?php 
+		include_once 'functions.php';
 		if (isset($_SESSION['user'])){ include("diag.php"); }
 		?>
 		</div>
@@ -11,23 +12,59 @@
 </main>
 	<div id="nav">
 		<div class="navbutton" id="b1">
-			<h3>Lights</h3>
+			<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "lights" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 		</div>
 		<div class="navbutton" id="b2">	
-			<h3>Heating</h3>
+			<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "heating" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 		</div>
 		<div class="navbutton" id="b3">	
-			<h3>Access Control</h3>
+			<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "access" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 		</div>
 		<div class="navbutton" id="b4">	
-			<h3>Settings</h3>
+			<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "settings" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 		</div>
 		<div class="navbutton" id="b5">	
-			<h3>Diagnostics</h3>
+			<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "diag" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
 		</div>
 		<a href="index.php?p=logout">
 		<div class="navbutton" id="b6">	
-			<h3>Logout</h3>	
+			<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "logout" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>	
 		</div>
 		</a>
 	

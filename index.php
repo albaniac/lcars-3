@@ -37,9 +37,9 @@ if ($page == "logout") {logout();}
 		    mn = checkTime(mn);
 		    m = checkTime(m);
 		    h = checkTime(h);
-		    document.getElementById('date').innerHTML = "<h2> Stardate: "+d+"."+mn+"."+y+" &bull; Time: "+h+":"+m+"</h2>";
+		    document.getElementById('date').innerHTML = "<h2> "+d+"."+mn+"."+y+" &bull; "+h+":"+m+"</h2>";
 		    getenv();
-		    var t = setTimeout(function(){startTime();},15*1000);
+		    var t = setTimeout(function(){startTime();},5*1000);
 		}
 		
 		function checkTime(i) {
@@ -55,7 +55,14 @@ if ($page == "logout") {logout();}
 		<header id="header">
 			<div id="hlcorner">
 				<div id="hmenu">
-					<h2>Menu</h2>
+					<h2><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "hmenu" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					mysqli_close($con);
+					?></h2>
 				</div>
 				<div id="hmask">
 				</div>

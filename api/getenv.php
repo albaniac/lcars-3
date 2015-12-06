@@ -1,13 +1,14 @@
 <?php
 session_start();
+include_once '../config.php';
 if (isset($_SESSION['user'])){ 
 if($_POST["env"]=="t"){
-	$env=shell_exec("/opt/vc/bin/vcgencmd measure_temp");
-	$env=substr($env, 5, 4);
+	$env=shell_exec("python ".$config['site_root']."api/temp.py");
+	//$env=substr($env, 5, 4);
 	
 }
 elseif($_POST["env"]=="h"){
-	$env="66";
+	$env="TBI";
 }
 else{
 	$env="N/A";

@@ -5,7 +5,7 @@ include 'functions.php';
 
 session_start();
 if (isset($_SESSION['user'])){
-dbconnect();
+$con = dbconnect();
 echo'
 <script>
 $(document).ready(function() {
@@ -34,9 +34,9 @@ $(document).ready(function() {
 <div>
 	<div id="single">';
 	$query = 'SELECT * FROM `devices` WHERE `class` = "light"';
-	$result = mysql_query($query);
+	$result = mysqli_query($con,$query);
 	$i=0;
-	while($row = mysql_fetch_assoc($result)) {
+	while($row = mysqli_fetch_assoc($result)) {
 	$cid='l'.++$i;
 	echo '<div class="lightbtn singlebtn" id="'.$cid.'" device="'.$row["device"].'">';
 	echo $row["device"].'</div>';
@@ -57,7 +57,7 @@ echo'	</div>
 
 }
 if (!isset($_SESSION['user'])){
-die("You are not authorised to access this page.");
+die('You are not authorised to access this page.<audio autoplay><source src="sounds/access_denied.wav" type="audio/wav"></audio>');
 }
 
 ?>
