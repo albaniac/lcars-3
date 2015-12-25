@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 INSERT INTO `settings` (`id`, `parameter`, `value`, `spare`) VALUES
 (1, 'door_time', '2', ''),
 (2, 'i2c_th', '0x48', ''),
-(3, 'i2c_rh', '0x00', ''),
+(3, 'i2c_rh', '0x40', ''),
 (4, 'tos', '25', ''),
 (5, 'thyst', '23', ''),
 (6, 'temp', '27.0', '');

@@ -74,14 +74,17 @@ function checkCookie(){
 	$DBvalidator = $array["validator"];
 	$uid = $array["uid"];
 	$link = dbconnect();
-	$query = "SELECT `user` FROM users WHERE id = '".$uid."'";
+	$query = "SELECT * FROM users WHERE id = '".$uid."'";
 	$result =  mysqli_query($link,$query);
 	$idstring =  mysqli_fetch_array($result,MYSQLI_ASSOC);
 	if(password_verify($DBvalidator, $validator)){
 		$_SESSION["uid"] = $uid;
 		$_SESSION["gid"] = $idstring["gid"];
 		$_SESSION["user"] = $idstring["user"];
+		//echo "<script type='text/javascript'>alert(".$idstring['user'].");</script>";
 		$_SESSION["lang"] = $idstring["language"];
+		//echo "<script type='text/javascript'>alert(".$idstring['language'].");</script>";
+		if (!isset($_SESSION['lang'])){ $_SESSION['lang']="en_US"; };
 		return 1;
 	}
 	else{

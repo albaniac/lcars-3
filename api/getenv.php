@@ -8,7 +8,7 @@ if($_POST["env"]=="t"){
 	
 }
 elseif($_POST["env"]=="h"){
-	$env="TBI";
+	$env=shell_exec("python ".$config['site_root']."api/rh.py");
 }
 else{
 	$env="N/A";
