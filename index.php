@@ -30,16 +30,18 @@ if ($page == "logout") {logout();}
 		    var h=today.getHours();
 		    var m=today.getMinutes();
 		    var d=today.getDate();
-		    var mn=today.getMonth();
+		    var mn=today.getMonth()+1;
 		    var y=today.getFullYear();
+		    
 		    
 		    d = checkTime(d);
 		    mn = checkTime(mn);
 		    m = checkTime(m);
 		    h = checkTime(h);
+		    
 		    document.getElementById('date').innerHTML = "<h2> "+d+"."+mn+"."+y+" &bull; "+h+":"+m+"</h2>";
 		    getenv();
-		    var t = setTimeout(function(){startTime();},5*1000);
+		    var t = setTimeout(function(){startTime();},15*1000);
 		}
 		
 		function checkTime(i) {
