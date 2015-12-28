@@ -63,7 +63,9 @@ if (isset($_SESSION['user'])){
 	echo $array['value'];
 	echo substr($df, 81, 5);
 	echo "<br>";
-	echo '<audio autoplay><source src="sounds/diagnose_complete.wav" type="audio/wav"></audio>';
+	if ($_SESSION["snd"]){
+		echo '<audio autoplay><source src="sounds/diagnose_complete.wav" type="audio/wav"></audio>';
+	}
 	
 }
 if (!isset($_SESSION['user'])){

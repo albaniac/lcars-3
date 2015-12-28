@@ -4,6 +4,9 @@
 include 'functions.php';
 
 session_start();
+if ($_SESSION['gid']>1){
+die('You are not authorised to access this page.<audio autoplay><source src="sounds/access_denied.wav" type="audio/wav"></audio>');
+}
 if (isset($_SESSION['user'])){
 	$con = dbconnect();
 	echo '<form action="settings.php" method="post">';

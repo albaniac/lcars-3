@@ -1,9 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!- UID < 2 ->
 <?php
 include 'functions.php';
 session_start();
 if (!isset($_SESSION['user'])){
+die('You are not authorised to access this page.<audio autoplay><source src="sounds/access_denied.wav" type="audio/wav"></audio>');
+}
+//echo $_SESSION['gid'].'   '.($_SESSION['gid']>1).'<br>';
+if ($_SESSION['gid']>1){
 die('You are not authorised to access this page.<audio autoplay><source src="sounds/access_denied.wav" type="audio/wav"></audio>');
 }
 ?>
@@ -19,6 +23,69 @@ $(document).ready(function() {
         	$(currentAttrValue).show().siblings().hide();
  
 	        //e.preventDefault();
+	});
+	
+	//********************************** USER DELETER ********************************
+	$('.delete').click(function(e)  {
+		//alert("bu");
+        	var currentAttrValue = $(this).attr('sqid');
+        	
+        	$( "#deleterText" ).html(function() {
+			var translation = <?php $con = dbconnect(); 
+						$query = 'SELECT * FROM `translations` WHERE `element` = "deleter_dialog" AND `lang` = "'.$_SESSION['lang'].'"';
+						$result = mysqli_query($con,$query);
+						$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+						echo json_encode($array['value']);
+					?>;
+  			var user = currentAttrValue;
+			return "<p>" + translation + " " + user + "?</p>";
+		});
+        	$( "#deleter" ).dialog({autoOpen: true, modal: true, dialogClass: "no-close",
+  			buttons: [{
+				text: "Ok",
+				click: function() {
+					$.post( "interface.php", {action: "udel" , sqid: currentAttrValue}, function(data){
+					//alert(data);
+					});
+					$( this ).dialog( "close" );
+				}
+			}, 
+			{
+				text: "Cancel",
+				click: function() {
+					$( this ).dialog( "close" );
+				}
+			}]
+		});
+	});
+	
+	//******************** USER EDITOR *************************************
+	$('.edit').click(function(e)  {
+		var currentAttrValue = $(this).attr('sqid');
+		$.post( "interface.php", {action: "getuser" , sqid: currentAttrValue}, function(data){
+			//alert(data);
+			$( "#editorText" ).html(data)
+		});
+        	$( "#editor" ).dialog({autoOpen: true, modal: true, dialogClass: "no-close",
+  		buttons: [{
+			text: "Ok",
+			click: function() {
+				$.post( "interface.php", {action: "uupd" , sqid: currentAttrValue}, function(data){
+				//alert(data);
+				});
+				$( this ).dialog( "close" );
+			}
+		}, 
+		{
+			text: "Cancel",
+			click: function() {
+				$( this ).dialog( "close" );
+			}
+		}
+		]
+	});
+		//alert(currentAttrValue);
+ 		//e.preventDefault();
 	});
 	
 	$("#filter").submit(function(e){
@@ -120,6 +187,9 @@ $(document).ready(function() {
 			$("#doorstate").empty().append(state);
 		})
 	}
+	
+	$( "#datefrom" ).datepicker({dateFormat: "dd.mm.yy", altField: "#altdatefrom", altFormat: "yymmdd", firstDay: 1});
+	$( "#dateto" ).datepicker({dateFormat: "dd.mm.yy", altField: "#altdateto", altFormat: "yymmdd", firstDay: 1});
 });
 
 </script>
@@ -152,11 +222,20 @@ $(document).ready(function() {
 					echo $array['value'];
 					?></h3>
 	</div>
+	<div class="subnavbutton" id="b4"ref="#timetables">	
+		<h3><?php $con = dbconnect(); 
+					$query = 'SELECT * FROM `translations` WHERE `element` = "timetables" AND `lang` = "'.$_SESSION['lang'].'"';
+					//echo $query;
+					$result = mysqli_query($con,$query);
+					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
+					echo $array['value'];
+					?></h3>
+	</div>
 </div>
 
 <div id="tabs">
 	<div id="door" class="tab active" onoad="checkdoor()">
-	<h1><div id="doorstate"></div></h1>
+	
 	<h1><div class="doorbtn" id="toggle"><?php $con = dbconnect(); 
 					$query = 'SELECT * FROM `translations` WHERE `element` = "toggle" AND `lang` = "'.$_SESSION['lang'].'"';
 					//echo $query;
@@ -176,6 +255,7 @@ $(document).ready(function() {
 					$array = mysqli_fetch_array($result,MYSQLI_ASSOC); 
 					echo $array['value'];
 					?></div>  </h1>
+	<h1><br><div id="doorstate"></div></h1>
 	
 	</div>
 	
@@ -197,6 +277,9 @@ $(document).ready(function() {
 		<th>
 		<a href="#">Edit</a>
 		</th>
+		<th>
+		<a href="#">Delete</a>
+		</th>
 		</tr>
 		</thead>
 		<tbody class="scrollContent">
@@ -208,9 +291,9 @@ $(document).ready(function() {
 	if (mysqli_num_rows($result) > 0) {
 		// output data of each row
 		$a = 0;
-		while($row = mysqli_fetch_assoc($result,MYSQLI_ASSOC)) {
-	        	if($a){echo '<tr class="alternaterow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td>Edit</td></tr>';$a=0;}
-	        	else{echo '<tr class="normalrow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td>Edit</td></tr>';$a=1;}
+		while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+	        	if($a){echo '<tr class="alternaterow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td class="edit" sqid="'.$row["ID"].'">Edit</td></td><td class="delete" sqid="'.$row["ID"].'">Delete</td></tr>';$a=0;}
+	        	else{echo '<tr class="normalrow"><td>' . $row["Name"]. '</td><td>' . $row["Group"]. '</td><td>' . $row["Added"]. '</td><td class="edit" sqid="'.$row["ID"].'">Edit</td></td><td class="delete" sqid="'.$row["ID"].'">Delete</td>></tr>';$a=1;}
 		}
 		echo '</table></div>';
 	}
@@ -226,19 +309,28 @@ $(document).ready(function() {
 	<?php
 echo '<h1>Access LOG: </h1><br><br>
 		<form id="filter">
-		From: <input type="date" class="textfield" name="from" value="'.date('Ymd', strtotime('-1 month')).'">  To:<input type="date" class="textfield" name="to"value="'.date('Ymd').'">  User:<select name="user"><option value="*">*</option>';
+		From: <input id="datefrom" type="text" class="textfield" name="from" value="'.date('d.m.Y', strtotime('-1 month')).'">
+		<input id="altdatefrom" type="text" class="textfield" name="from" value="'.date('Ymd', strtotime('-1 month')).'">  
+		To:<input id="dateto" type="text" class="textfield" name="to"value="'.date('d.m.Y').'">
+		<input id="altdateto" type="text" class="textfield" name="to"value="'.date('Ymd').'">  
+		User:<select name="user"><option value="*">*</option>';
 		$con = dbconnect();
 		$query = "SELECT * FROM `keys`";
 		$result =  mysqli_query($con,$query);
-		while($row = mysqli_fetch_assoc($result,MYSQLI_ASSOC)) {echo '<option value="'.$row["Name"].'">'.$row["Name"].'</option>';}
+		while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {echo '<option value="'.$row["Name"].'">'.$row["Name"].'</option>';}
 		$query = "SELECT * FROM `users`";
 		$result =  mysqli_query($con,$query);
-		while($row = mysqli_fetch_assoc($result,MYSQLI_ASSOC)) {echo '<option value="web-'.$row["user"].'">web-'.$row["user"].'</option>';}
+		while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {echo '<option value="web-'.$row["user"].'">web-'.$row["user"].'</option>';}
 		echo '</select>
 		<input type="submit" class="button" value="refresh">
 		</form>
 		<div id="logtable" class="tableContainer">';
 		echo '</div>';
+	?>
+	</div>
+	
+	<div id="timetables" class="tab">
+	<?php	
 	?>
 	</div>
 </div>	

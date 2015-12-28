@@ -308,25 +308,43 @@ select{
 	background: #000;
 	border:2px solid black;
 	border-left: 4px solid black;
+	
 }
 
 #tabs{
-	margin-left: 140px;
+	margin-left: 150px;
 }
 
 .tab{
 	display:none;
 }
 
+#altdateto{
+	display:none;
+}
+
+#altdatefrom{
+	display:none;
+}
+
+#altexpires{
+	display:none;
+}
+
+
 .tab.active{
 	display:block;
 }
 
 .subnavbutton{
-	width: 100px;
-	height:142px;
+	
+	width: 130px;
+	height:70px;
+}
+
+.subnavbutton h3{
 	color:#000;
-	margin: 4px;
+	margin:4px;
 	text-align:right;
 	position:relative;
 	top:60%;
@@ -357,8 +375,17 @@ select{
 }
 
 .tableContainer a{
-	color:black;
-	
+	color:black;	
+}
+
+.edit:hover{
+	color: #ff9900;
+	cursor: pointer;
+}
+
+.delete:hover{
+	color: #ff9900;
+	cursor: pointer;
 }
 
 #toggle{

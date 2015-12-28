@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2015 at 09:32 PM
+-- Generation Time: Dec 28, 2015 at 04:55 PM
 -- Server version: 10.0.22-MariaDB-0+deb8u1
 -- PHP Version: 5.6.14-0+deb8u1
 
@@ -31,10 +31,9 @@ CREATE TABLE IF NOT EXISTS `AccessLog` (
   `Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Key` text COLLATE utf8_unicode_ci NOT NULL,
   `Action` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=337 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=353 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `control`
@@ -63,10 +62,8 @@ CREATE TABLE IF NOT EXISTS `cookies` (
   `selector` text NOT NULL,
   `validator` text NOT NULL,
   `uid` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `devices`
@@ -91,8 +88,8 @@ INSERT INTO `devices` (`id`, `device`, `code`, `status`, `class`) VALUES
 (4, 'Lamp B', '00001000', '0', 'light'),
 (5, 'Lamp C', '00010000', '0', 'light'),
 (6, 'Lamp D', '00100000', '0', 'light'),
-(7, 'Lamp E', '01000000', '0', 'light'),
-(8, 'Door', '10000000', '0', 'door');
+(7, 'Namizna', '01000000', '0', 'light'),
+(8, 'Kljucavnica', '10000000', '0', 'door');
 
 --
 -- Triggers `devices`
@@ -123,17 +120,17 @@ CREATE TABLE IF NOT EXISTS `keys` (
   `Added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Expires` text COLLATE utf8_unicode_ci NOT NULL,
   `Hex` text COLLATE utf8_unicode_ci
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `keys`
 --
 
 INSERT INTO `keys` (`ID`, `Key`, `Name`, `Group`, `Active`, `Added`, `Expires`, `Hex`) VALUES
-(31, '8847572', 'Axl', 'Guns''n''roses', 1, '2015-05-02 12:18:17', '0', '10008700D4'),
-(32, '8907095', 'Angus', 'ACDC', 1, '2015-05-02 12:18:23', '0', '100087E957'),
-(33, '8853015', 'Malcolm', 'ACDC', 1, '2015-05-02 12:18:26', '0', '1000871617'),
-
+(1, '50205991', 'LEK', 'Začasni', 1, '2015-05-01 19:50:02', '0', '0F02FE1527'),
+(2, '8847572', 'Axl', 'Guns''n''roses', 1, '2015-05-02 12:18:17', '0', '10008700D4'),
+(3, '8907095', 'Angus', 'ACDC', 1, '2015-05-02 12:18:23', '0', '100087E957'),
+(4, '8853015', 'Malcolm', 'ACDC', 1, '2015-05-02 12:18:26', '0', '1000871617'),
 
 -- --------------------------------------------------------
 
@@ -158,7 +155,7 @@ INSERT INTO `settings` (`id`, `parameter`, `value`, `spare`) VALUES
 (3, 'i2c_rh', '0x40', ''),
 (4, 'tos', '25', ''),
 (5, 'thyst', '23', ''),
-(6, 'temp', '27.0', '');
+(6, 'temp', '26.0', '');
 
 -- --------------------------------------------------------
 
@@ -169,13 +166,33 @@ INSERT INTO `settings` (`id`, `parameter`, `value`, `spare`) VALUES
 CREATE TABLE IF NOT EXISTS `timetables` (
 `id` int(11) NOT NULL,
   `number` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `category` text NOT NULL,
-  `day` text NOT NULL,
-  `time_from` int(11) NOT NULL,
-  `time_to` int(11) NOT NULL,
+  `name` text CHARACTER SET utf8 COLLATE utf8_slovenian_ci NOT NULL,
+  `category` text CHARACTER SET utf8 COLLATE utf8_slovenian_ci NOT NULL,
+  `day` int(1) NOT NULL,
+  `time_from` time(4) NOT NULL,
+  `time_to` time(4) NOT NULL,
   `value` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `timetables`
+--
+
+INSERT INTO `timetables` (`id`, `number`, `name`, `category`, `day`, `time_from`, `time_to`, `value`) VALUES
+(1, 0, '24/7', 'access', 1, '00:00:00.0000', '24:00:00.0000', 1),
+(2, 0, '24/7', 'access', 2, '00:00:00.0000', '24:00:00.0000', 1),
+(3, 0, '24/7', 'access', 3, '00:00:00.0000', '24:00:00.0000', 1),
+(4, 0, '24/7', 'access', 4, '00:00:00.0000', '24:00:00.0000', 1),
+(5, 0, '24/7', 'access', 5, '00:00:00.0000', '24:00:00.0000', 1),
+(6, 0, '24/7', 'access', 6, '00:00:00.0000', '24:00:00.0000', 1),
+(7, 0, '24/7', 'access', 7, '00:00:00.0000', '24:00:00.0000', 1),
+(8, 1, 'never', 'access', 1, '00:00:00.0000', '24:00:00.0000', 0),
+(9, 1, 'never', 'access', 2, '00:00:00.0000', '24:00:00.0000', 0),
+(10, 1, 'never', 'access', 3, '00:00:00.0000', '24:00:00.0000', 0),
+(11, 1, 'never', 'access', 4, '00:00:00.0000', '24:00:00.0000', 0),
+(12, 1, 'never', 'access', 5, '00:00:00.0000', '24:00:00.0000', 0),
+(13, 1, 'never', 'access', 6, '00:00:00.0000', '24:00:00.0000', 0),
+(14, 1, 'never', 'access', 7, '00:00:00.0000', '24:00:00.0000', 0);
 
 -- --------------------------------------------------------
 
@@ -188,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `translations` (
   `element` text CHARACTER SET latin1 NOT NULL,
   `lang` text CHARACTER SET latin1 NOT NULL,
   `value` text COLLATE utf32_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci;
 
 --
 -- Dumping data for table `translations`
@@ -257,7 +274,13 @@ INSERT INTO `translations` (`id`, `element`, `lang`, `value`) VALUES
 (60, 'added', 'en_US', 'Added on'),
 (61, 'added', 'si_SL', 'Dodan'),
 (62, 'edit', 'en_US', 'Edit'),
-(63, 'edit', 'si_SL', 'Uredi');
+(63, 'edit', 'si_SL', 'Uredi'),
+(64, 'timetables', 'en_US', 'Timetables'),
+(65, 'timetables', 'si_SL', 'Urniki'),
+(66, 'deleter_dialog', 'en_US', 'Are you sure you want to delete user'),
+(67, 'deleter_dialog', 'si_SL', 'Ali ste prepricani da zelite izbrisati uporabnika'),
+(68, 'editor', 'en_US', 'echo ''<form><!--<span class="error"> </span><br>-->;		Name: <input type="text" name="name" class="textfield" value="''.$array[''Name''].''"><br>		Key: <input type="text" name="key" class="textfield" value="''.$array[''Key''].''">		<button>Get key from reader</button><br>		Expires: <input type="text" id="expires" name="expires" class="textfield" value="''.$array[''Expires''].''">			<input type="text" id="altexpires" name="expires" class="textfield" value="''.$array[''Expires''].''"><br>		Group: <input type="text" name="group" class="textfield" value="''.$array[''Group''].''"><br>		Active: <input type="checkbox" name="active" class="checkbox" value="1"''$act.''<br>			</form>				<script>				$( "#expires" ).datepicker({dateFormat: "dd.mm.yy", altField: "#altexpires", altFormat: "yymmdd", firstDay: 1, minDate: "+1d"});				$( "button" ).button();			</script>'';'),
+(69, 'editor', 'si_SL', 'echo ''<form><!--<span class="error"> </span><br>-->;		Name: <input type="text" name="name" class="textfield" value="''.$array[''Name''].''"><br>		Key: <input type="text" name="key" class="textfield" value="''.$array[''Key''].''">		<button>Get key from reader</button><br>		Expires: <input type="text" id="expires" name="expires" class="textfield" value="''.$array[''Expires''].''">			<input type="text" id="altexpires" name="expires" class="textfield" value="''.$array[''Expires''].''"><br>		Group: <input type="text" name="group" class="textfield" value="''.$array[''Group''].''"><br>		Active: <input type="checkbox" name="active" class="checkbox" value="1"''.$act.''<br>			</form>				<script>				$( "#expires" ).datepicker({dateFormat: "dd.mm.yy", altField: "#altexpires", altFormat: "yymmdd", firstDay: 1, minDate: "+1d"});				$( "button" ).button();			</script>'';');
 
 -- --------------------------------------------------------
 
@@ -270,16 +293,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user` varchar(255) COLLATE latin1_german1_ci NOT NULL,
   `pass` varchar(255) COLLATE latin1_german1_ci NOT NULL,
   `language` text COLLATE latin1_german1_ci NOT NULL,
-  `gid` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
+  `gid` int(11) NOT NULL,
+  `snd` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `user`, `pass`, `language`, `gid`) VALUES
-(1, 'admin', '$2y$10$m6i1S6cl3DW0i72g5oGpQOsnq9gzWzYSqwgL9OcEiYMb5OSxSmwFW', 'si_SL', 0),
-(2, 'test', '$2y$10$ycM1ArOm60v9VI6IyomDiOdbPUOuBGsaFLm7khPoSAMT08289E3B.', 'en_US', 1),
+INSERT INTO `users` (`id`, `user`, `pass`, `language`, `gid`, `snd`) VALUES
+(1, 'admin', '$2y$10$m6i1S6cl3DW0i72g5oGpQOsnq9gzWzYSqwgL9OcEiYMb5OSxSmwFW', 'en_US', 1, 0),
+(2, 'test', '$2y$10$ycM1ArOm60v9VI6IyomDiOdbPUOuBGsaFLm7khPoSAMT08289E3B.', 'en_US', 2, 0),
+(3, 'superadmin', '$2y$10$tHsroc4hAdQitzqhzI9PbOJN5In6YloZH1PjV7ekpqLJzs2UGCwPK', 'en_US', 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -307,7 +332,7 @@ ALTER TABLE `devices`
 -- Indexes for table `keys`
 --
 ALTER TABLE `keys`
- ADD KEY `ID` (`ID`);
+ ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `settings`
@@ -341,12 +366,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `AccessLog`
 --
 ALTER TABLE `AccessLog`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=337;
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `cookies`
 --
 ALTER TABLE `cookies`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `devices`
 --
@@ -356,7 +381,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 -- AUTO_INCREMENT for table `keys`
 --
 ALTER TABLE `keys`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `settings`
 --
@@ -366,12 +391,12 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 -- AUTO_INCREMENT for table `timetables`
 --
 ALTER TABLE `timetables`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `translations`
 --
 ALTER TABLE `translations`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=70;
 --
 -- AUTO_INCREMENT for table `users`
 --

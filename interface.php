@@ -46,6 +46,41 @@ if (isset($_SESSION['user'])){
 		mysqli_commit($con);
 		mysqli_close($con);
 	}
+	elseif($_POST["action"]=="udel"){
+		$con = dbconnect();
+		$query = 'DELETE FROM `keys` WHERE `ID`='.$_POST["sqid"];
+		mysqli_query($con,$query);
+		mysqli_commit($con);
+		mysqli_close($con);
+		echo 'Success!';
+	}
+	
+
+	elseif($_POST["action"]=="getuser"){
+		
+		$con = dbconnect(); 
+		$query = 'SELECT * FROM `keys` WHERE `ID`='.$_POST["sqid"];
+		$result = mysqli_query($con,$query);
+		$array = mysqli_fetch_array($result,MYSQLI_ASSOC);
+		if ($array['Active']) {$act="checked";} else{$act="unchecked";} 
+		$query = 'SELECT * FROM `translations` WHERE `element` = "editor" AND `lang` = "'.$_SESSION['lang'].'"';
+		$result = mysqli_query($con,$query);
+		$trans = mysqli_fetch_array($result,MYSQLI_ASSOC);
+		mysqli_close($con);
+		//echo $array['value'];
+		eval($trans['value']);
+		
+	}
+	
+	
+	elseif($_POST["action"]=="uupd"){
+		//$con = dbconnect();
+		//$query = 'UPDATE `keys` SET `Key`=[value-2],`Name`=[value-3],`Group`=[value-4],`Active`=[value-5],`Added`=[value-6],`Expires`=[value-7],`Hex`=[value-8] WHERE `ID`='.$_POST["sqid"];
+		//mysqli_query($con,$query);
+		//mysqli_commit($con);
+		//mysqli_close($con);
+		echo 'Success!';
+	}
 
 	else{}
 

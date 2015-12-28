@@ -4,7 +4,7 @@ session_start();
 if (isset($_SESSION['user'])){ 
 	
 	$con = dbconnect();
-	$to=$_POST["to"];
+	$to=$_POST["to"]+1;
 	if($_POST["user"]=='*'){
 		$query = "SELECT * FROM `AccessLog` WHERE `Time` >= ".$_POST["from"]." AND `Time` <= ".$to;
 	}
@@ -31,7 +31,7 @@ if (isset($_SESSION['user'])){
 		<tbody class="scrollContent">';
 		// output data of each row
 		$a = 0;
-		while($row = mysqli_fetch_assoc($result)) {
+		while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
 	        	if($a){echo '<tr class="alternaterow"><td>' . $row["Time"]. '</td><td>' . $row["Key"]. '</td><td>' . $row["Action"]. '</td></tr>';$a=0;}
 	        	else{echo '<tr class="normalrow"><td>' . $row["Time"]. '</td><td>' . $row["Key"]. '</td><td>' . $row["Action"]. '</td></tr>';$a=1;}
 		}

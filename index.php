@@ -22,7 +22,9 @@ if ($page == "logout") {logout();}
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>LCARS: GZT-project</title>
 		<link href="lcars.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="jquery-ui-1.11/jquery-ui.css">
 		<script src="jquery.js"></script>
+		<script src="jquery-ui-1.11/jquery-ui.js"></script>
 		<script src="jquery-colors.js"></script>
 		<script>	
 		function startTime() {
@@ -110,5 +112,8 @@ if (!isset($_SESSION['user'])){ include("login.php"); }
 			</div>
 			
 		</footer>
+		<!--***************************************-->
+		<div id="deleter" title="Delete"><div id="deleterText"></div><div>
+		<div id="editor" title="Edit"><div id="editorText"></div><div>
 	
 	</body>

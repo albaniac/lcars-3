@@ -36,6 +36,7 @@ function login($username,$password,$cookie) {
 		$_SESSION["uid"] = $idstring["id"];
 		$_SESSION["gid"] = $idstring["gid"];
 		$_SESSION["lang"] = $idstring["language"];
+		$_SESSION["snd"] = $idstring["snd"];
 		if($cookie=="1"){
 			$selector = base64_encode(openssl_random_pseudo_bytes(30));
 			$validator = base64_encode(openssl_random_pseudo_bytes(30));
@@ -83,6 +84,7 @@ function checkCookie(){
 		$_SESSION["user"] = $idstring["user"];
 		//echo "<script type='text/javascript'>alert(".$idstring['user'].");</script>";
 		$_SESSION["lang"] = $idstring["language"];
+		$_SESSION["snd"] = $idstring["snd"];
 		//echo "<script type='text/javascript'>alert(".$idstring['language'].");</script>";
 		if (!isset($_SESSION['lang'])){ $_SESSION['lang']="en_US"; };
 		return 1;

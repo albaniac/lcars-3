@@ -36,7 +36,7 @@ $(document).ready(function() {
 	$query = 'SELECT * FROM `devices` WHERE `class` = "light"';
 	$result = mysqli_query($con,$query);
 	$i=0;
-	while($row = mysqli_fetch_assoc($result)) {
+	while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
 	$cid='l'.++$i;
 	echo '<div class="lightbtn singlebtn" id="'.$cid.'" device="'.$row["device"].'">';
 	echo $row["device"].'</div>';
